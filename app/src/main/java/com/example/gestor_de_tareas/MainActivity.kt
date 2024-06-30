@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
                         selectedIcon = Icons.Filled.Settings,
                         unselectedIcon = Icons.Outlined.Settings,
 
-                        /**/
+                        /*--*/
                     ),
                 )
 
