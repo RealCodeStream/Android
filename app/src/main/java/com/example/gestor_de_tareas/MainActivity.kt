@@ -10,14 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,25 +40,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.gestor_de_tareas.components.CalendarScreen
-import com.example.gestor_de_tareas.components.CarpetasScreen
-import com.example.gestor_de_tareas.components.FileDatailScreen
-import com.example.gestor_de_tareas.components.FileListScreen
-import com.example.gestor_de_tareas.components.NotificationsScreen
-import com.example.gestor_de_tareas.components.SettingsScreen
-import com.example.gestor_de_tareas.navigation.Screen
 import com.example.gestor_de_tareas.ui.theme.Gestor_de_TareasTheme
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -71,30 +54,21 @@ class MainActivity : ComponentActivity() {
             Gestor_de_TareasTheme {
                 val items = listOf(
                     NavigationItem(
-                        title = "Home",
+                        title = "All",
                         selectedIcon = Icons.Filled.Home,
                         unselectedIcon = Icons.Outlined.Home,
-                        route = Screen.Home.route
                     ),
                     NavigationItem(
-                        title = "Notifications",
-                        selectedIcon = Icons.Filled.Notifications,
-                        unselectedIcon = Icons.Outlined.Notifications,
-                        //badgeCount = 45,
-                        route = Screen.Notifications.route
-                    ),
-                    NavigationItem(
-                        title = "Calendar",
-                        selectedIcon = Icons.Filled.DateRange,
-                        unselectedIcon = Icons.Outlined.DateRange,
-                        //badgeCount = 45,
-                        route = Screen.Calendar.route
+                        title = "Urgent",
+                        selectedIcon = Icons.Filled.Info,
+                        unselectedIcon = Icons.Outlined.Info,
+                        badgeCount = 45
                     ),
                     NavigationItem(
                         title = "Settings",
                         selectedIcon = Icons.Filled.Settings,
                         unselectedIcon = Icons.Outlined.Settings,
-                        route = Screen.Settings.route
+
                         /**/
                     ),
                 )
@@ -103,7 +77,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
                     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
                     var selectedItemIndex by rememberSaveable {
@@ -120,7 +93,7 @@ class MainActivity : ComponentActivity() {
                                         },
                                         selected = index == selectedItemIndex,
                                         onClick = {
-                                           navController.navigate(item.route)
+//                                            navController.navigate(item.route)
                                             selectedItemIndex = index
                                             scope.launch {
                                                 drawerState.close()
@@ -150,14 +123,9 @@ class MainActivity : ComponentActivity() {
                         Scaffold(
                             topBar = {
                                 TopAppBar(
-
                                     title = {
-                                        Text(text = "ultimate task",
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis)
-
+                                        Text(text = "ultimate task")
                                     },
-
                                     navigationIcon = {
                                         IconButton(onClick = {
                                             scope.launch {
@@ -168,49 +136,11 @@ class MainActivity : ComponentActivity() {
                                                 imageVector = Icons.Default.Menu,
                                                 contentDescription = "Menu"
                                             )
-
-                                        }
-
-
-                                    },
-                                    actions = {
-                                        IconButton(onClick = {navController.navigate(Screen.Notifications.route) }) {
-                                            Icon(
-                                                imageVector = Icons.Filled.Notifications,
-                                                contentDescription = "Notificaciones"
-                                            )
                                         }
                                     }
                                 )
-
-                            },
-
-                        ) { innerPadding ->
-                            NavHost(navController = navController,
-                                startDestination = Screen.Home.route,
-                                modifier = Modifier.padding(innerPadding)) {
-                                composable(Screen.Home.route){ CarpetasScreen(navController) }
-                                composable(Screen.Notifications.route){ NotificationsScreen(navController) }
-                                composable(Screen.Calendar.route){ CalendarScreen(navController) }
-                                composable(Screen.Settings.route) {  SettingsScreen(navController) }
-                                composable(Screen.FileList.route,
-                                    arguments = listOf(navArgument("folderId") { type = NavType.IntType }))
-                                {backStackEntry ->
-                                    FileListScreen(
-                                        navController,
-                                        folderId = backStackEntry.arguments?.getInt("folderId") ?: -1
-                                    )
-                                }
-                                composable(Screen.FileDetail.route,
-                                    arguments = listOf(navArgument("fileId") { type = NavType.IntType }))
-                                {backStackEntry ->
-                                    FileDatailScreen(
-                                        navController,
-                                        fileId = backStackEntry.arguments?.getInt("fileId") ?: -1
-                                    )
-                                }
-                                
                             }
+                        ) {
 
                         }
                     }
@@ -225,7 +155,6 @@ data class NavigationItem(
     val title: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
-    val badgeCount: Int? = null,
-    val route: String
+    val badgeCount: Int? = null
 )
 
