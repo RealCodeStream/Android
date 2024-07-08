@@ -1,6 +1,5 @@
 package com.example.gestor_de_tareas.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,50 +24,63 @@ fun CarpetasScreen(
     viewModel: FoldersViewModel = hiltViewModel()
 ) {
     val folders by viewModel.folders.collectAsState()
-    var showAddFolderDialog by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { showAddFolderDialog = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Añadir carpeta")
+            FloatingActionButton(onClick = { showDialog = true }) {
+                Icon(Icons.Default.Add, contentDescription = "Add Folder")
             }
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+        if (showDialog) {
+            FolderDialog(onDismiss = { showDialog = false }, onSave = { name, description ->
+                viewModel.addFolder(Folder(0, name, description, ""))
+                showDialog = false
+            })
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            contentPadding = paddingValues,
+            modifier = Modifier.padding(16.dp)
         ) {
-            if (folders.isEmpty()) {
-                Text(
-                    text = "Añade tus carpetas aquí",
-                    modifier = Modifier.padding(16.dp)
+            items(folders) { folder ->
+                FolderItem(
+                    folder = folder,
+                    onClick = { navController.navigate("filelist/${folder.id}") }
                 )
-            } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    contentPadding = PaddingValues(16.dp)
-                ) {
-                    items(folders) { folder ->
-                        FolderItem(
-                            folder = folder,
-                            onClick = { navController.navigate("files/${folder.id}") }
-                        )
-                    }
-                }
             }
         }
     }
+}
 
-    if (showAddFolderDialog) {
-        AddFolderDialog(
-            onDismiss = { showAddFolderDialog = false },
-            onConfirm = { name, description ->
-                viewModel.addFolder(Folder(title = name, description = description, imagePath = ""))
-                showAddFolderDialog = false
+@Composable
+fun FolderDialog(onDismiss: () -> Unit, onSave: (String, String) -> Unit) {
+    var name by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Nueva carpeta") },
+        text = {
+            Column {
+                TextField(value = name, onValueChange = { name = it }, label = { Text("Nombre") })
+                Spacer(modifier = Modifier.height(8.dp))
+                TextField(value = description, onValueChange = { description = it }, label = { Text("Descripcion") })
             }
-        )
-    }
+        },
+        confirmButton = {
+            Button(onClick = { onSave(name, description) }) {
+                Text("Confirmar")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) {
+                Text("Cancelar")
+            }
+        }
+    )
 }
 
 @Composable
@@ -84,44 +96,11 @@ fun FolderItem(folder: Folder, onClick: () -> Unit) {
                     .fillMaxWidth()
                     .height(120.dp)
                     .background(Color.Gray)
-            )
-            Text(text = folder.title, style = MaterialTheme.typography.headlineSmall)
+            ) {
+                // Placeholder for image
+            }
+            Text(text = folder.title, style = MaterialTheme.typography.bodyLarge)
             Text(text = folder.description, style = MaterialTheme.typography.bodySmall)
         }
     }
-}
-
-@Composable
-fun AddFolderDialog(onDismiss: () -> Unit, onConfirm: (String, String) -> Unit) {
-    var name by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = { onConfirm(name, description) }) {
-                Text("Confirmar")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancelar")
-            }
-        },
-        title = { Text(text = "Nueva carpeta") },
-        text = {
-            Column {
-                TextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    label = { Text("Nombre") }
-                )
-                TextField(
-                    value = description,
-                    onValueChange = { description = it },
-                    label = { Text("Descripción") }
-                )
-            }
-        }
-    )
 }

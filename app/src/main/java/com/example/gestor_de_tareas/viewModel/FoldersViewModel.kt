@@ -22,16 +22,4 @@ class FoldersViewModel @Inject constructor(
             repository.insertFolder(folder)
         }
     }
-
-    fun updateFolder(folder: Folder) {
-        viewModelScope.launch {
-            repository.updateFolder(folder)
-        }
-    }
-
-    fun deleteFolder(folder: Folder) {
-        viewModelScope.launch {
-            repository.deleteFolder(folder)
-        }
-    }
 }

@@ -14,5 +14,9 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         composable("notificaciones") { NotificationsScreen(navController) }
         composable("calendario") { CalendarScreen(navController) }
         composable("configuracion") { SettingsScreen(navController) }
+        composable("filelist/{folderId}") { backStackEntry ->
+            val folderId = backStackEntry.arguments?.getString("folderId")?.toInt() ?: return@composable
+            FileListScreen(navController, folderId)
+        }
     }
 }

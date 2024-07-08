@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text("Gestor de tareas", style = MaterialTheme.typography.headlineSmall)
                                 Spacer(modifier = Modifier.height(16.dp))
-                                NavigationItem("Carpetas", Icons.Default.Create) {
+                                NavigationItem("Carpetas", Icons.Default.Menu) {
                                     navController.navigate("carpetas")
                                     scope.launch { drawerState.close() }
                                 }
@@ -44,11 +44,11 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate("notificaciones")
                                     scope.launch { drawerState.close() }
                                 }
-                                NavigationItem("Calendario", Icons.Default.AccountBox) {
+                                NavigationItem("Calendario", Icons.Default.DateRange) {
                                     navController.navigate("calendario")
                                     scope.launch { drawerState.close() }
                                 }
-                                NavigationItem("Configuración", Icons.Default.Settings) {
+                                NavigationItem("Configuracion", Icons.Default.Settings) {
                                     navController.navigate("configuracion")
                                     scope.launch { drawerState.close() }
                                 }
