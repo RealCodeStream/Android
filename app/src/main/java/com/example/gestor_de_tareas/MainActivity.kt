@@ -67,11 +67,6 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             )
-                        },
-                        floatingActionButton = {
-                            FloatingActionButton(onClick = { /* Acción del FAB */ }) {
-                                Icon(Icons.Default.Add, contentDescription = "Agregar")
-                            }
                         }
                     ) { paddingValues ->
                         AppNavHost(navController = navController, modifier = Modifier.padding(paddingValues))
@@ -87,7 +82,7 @@ fun NavigationItem(label: String, icon: ImageVector, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = Modifier
-            .width(200.dp)
+            .width(200.dp) // Ajusta este valor según el ancho deseado
             .padding(vertical = 4.dp),
         contentPadding = PaddingValues(16.dp)
     ) {

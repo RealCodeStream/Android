@@ -14,8 +14,9 @@ import javax.inject.Inject
 class FoldersViewModel @Inject constructor(
     private val repository: TaskRepository
 ) : ViewModel() {
+
     val folders = repository.getAllFolders()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     fun addFolder(folder: Folder) {
         viewModelScope.launch {
