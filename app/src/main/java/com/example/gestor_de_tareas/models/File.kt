@@ -24,6 +24,5 @@ data class File(
     val title: String,
     val content: String,
     val attachmentPath: String?,
-    val startDate: Long,
-    val endDate: Long
+    val date: String
 )
