@@ -24,4 +24,9 @@ class FoldersViewModel @Inject constructor(
         }
     }
 
+    fun deleteFolder(folder: Folder) {
+        viewModelScope.launch {
+            repository.deleteFolder(folder)
+        }
+    }
 }

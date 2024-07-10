@@ -30,12 +30,11 @@ object AppModule {
 
 
     @Provides
-    @Singleton
     fun provideTaskRepository(
-        folderDao: FolderDao,
         fileDao: FileDao,
+        folderDao: FolderDao,
         notificationDao: NotificationDao
     ): TaskRepository {
-        return TaskRepository(folderDao, fileDao, notificationDao)
+        return TaskRepository(fileDao, folderDao, notificationDao)
     }
 }
