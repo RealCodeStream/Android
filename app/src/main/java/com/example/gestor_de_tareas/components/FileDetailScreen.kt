@@ -5,6 +5,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 
 @Composable
-fun FileDatailScreen(navController: NavController, fileId: Int) {
+fun FileDetailScreen(navController: NavController, fileId: Int) {
 
 }

@@ -14,7 +14,7 @@ import javax.inject.Inject
 class FileListViewModel @Inject constructor(
     private val repository: TaskRepository
 ) : ViewModel() {
-    fun getFilesForFolder(folderId: Int) = repository.getFilesForFolder(folderId)
+    fun getFilesForFolder(folderId: Int) = repository.getFilesByFolder(folderId)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun addFile(file: File) {
