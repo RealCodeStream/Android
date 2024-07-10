@@ -28,14 +28,12 @@ object AppModule {
     @Provides
     fun provideNotificationDao(db: AppDatabase): NotificationDao = db.notificationDao()
 
-
     @Provides
-    @Singleton
     fun provideTaskRepository(
-        folderDao: FolderDao,
         fileDao: FileDao,
+        folderDao: FolderDao,
         notificationDao: NotificationDao
     ): TaskRepository {
-        return TaskRepository(folderDao, fileDao, notificationDao)
+        return TaskRepository(fileDao, folderDao, notificationDao)
     }
 }

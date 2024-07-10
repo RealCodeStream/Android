@@ -82,7 +82,7 @@ fun NavigationItem(label: String, icon: ImageVector, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = Modifier
-            .width(200.dp) // Ajusta este valor según el ancho deseado
+            .width(200.dp)
             .padding(vertical = 4.dp),
         contentPadding = PaddingValues(16.dp)
     ) {
