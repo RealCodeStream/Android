@@ -22,3 +22,4 @@ interface FolderDao {
     @Delete
     suspend fun deleteFolder(folder: Folder)
 }
+

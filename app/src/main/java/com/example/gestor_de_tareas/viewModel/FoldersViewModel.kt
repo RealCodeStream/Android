@@ -23,4 +23,5 @@ class FoldersViewModel @Inject constructor(
             repository.insertFolder(folder)
         }
     }
+
 }

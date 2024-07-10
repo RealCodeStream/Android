@@ -6,7 +6,7 @@ import javax.inject.Inject
 class TaskRepository @Inject constructor(
     private val folderDao: FolderDao,
     private val fileDao: FileDao,
-    private val notificationDao: NotificationDao
+    private val notificationDao: NotificationDao,
 ) {
     fun getAllFolders(): Flow<List<Folder>> = folderDao.getAllFolders()
     suspend fun insertFolder(folder: Folder) = folderDao.insertFolder(folder)
@@ -23,4 +23,5 @@ class TaskRepository @Inject constructor(
     suspend fun insertNotification(notification: Notification) = notificationDao.insertNotification(notification)
     suspend fun updateNotification(notification: Notification) = notificationDao.updateNotification(notification)
     suspend fun deleteNotification(notification: Notification) = notificationDao.deleteNotification(notification)
+
 }
