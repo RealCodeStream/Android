@@ -1,8 +1,7 @@
 package com.example.gestor_de_tareas.models
 
-import android.content.Context
+
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 
 /*@Database(entities = [Folder::class, File::class, Notification::class], version = 1)
@@ -34,3 +33,4 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun fileDao(): FileDao
     abstract fun notificationDao(): NotificationDao
 }
+

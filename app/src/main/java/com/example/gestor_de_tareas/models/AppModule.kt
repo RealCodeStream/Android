@@ -1,11 +1,10 @@
 package com.example.gestor_de_tareas.models
 
-import android.content.Context
+import android.app.Application
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -14,28 +13,28 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "task_manager_database"
-        ).build()
+    fun provideDatabase(app: Application): AppDatabase {
+        return Room.databaseBuilder(app, AppDatabase::class.java, "task_manager.db")
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
-    fun provideFolderDao(database: AppDatabase) = database.folderDao()
+    fun provideFileDao(db: AppDatabase): FileDao = db.fileDao()
 
     @Provides
-    fun provideFileDao(database: AppDatabase) = database.fileDao()
+    fun provideFolderDao(db: AppDatabase): FolderDao = db.folderDao()
 
     @Provides
-    fun provideNotificationDao(database: AppDatabase) = database.notificationDao()
+    fun provideNotificationDao(db: AppDatabase): NotificationDao = db.notificationDao()
+
 
     @Provides
-    @Singleton
     fun provideTaskRepository(
-        folderDao: FolderDao,
         fileDao: FileDao,
+        folderDao: FolderDao,
         notificationDao: NotificationDao
-    ) = TaskRepository(folderDao, fileDao, notificationDao)
+    ): TaskRepository {
+        return TaskRepository(fileDao, folderDao, notificationDao)
+    }
 }
