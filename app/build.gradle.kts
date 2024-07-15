@@ -65,6 +65,10 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.places)
+    implementation(libs.androidx.media3.common)
+    //implementation(libs.androidx.datastore.core.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -76,6 +80,9 @@ dependencies {
     val room_version = "2.6.1"
     val lifecycle_version = "2.8.3"
     val work_version = "2.9.0"
+
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
+
     implementation("androidx.room:room-runtime:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
@@ -85,6 +92,7 @@ dependencies {
     implementation("androidx.compose.animation:animation:1.6.8")
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:$work_version")
+    //kapt ("androidx.hilt:hilt-compiler:1.0.0")
     // Hilt for dependency injection
     implementation("com.google.dagger:hilt-android:2.50")
     kapt("com.google.dagger:hilt-android-compiler:2.50")
@@ -95,4 +103,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
     // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.5.0")
+
+    implementation ("com.jakewharton.timber:timber:5.0.1")
+
+
 }

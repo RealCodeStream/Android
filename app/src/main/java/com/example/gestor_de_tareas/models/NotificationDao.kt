@@ -19,4 +19,16 @@ interface NotificationDao {
 
     @Query("DELETE FROM notifications WHERE id = :notificationId")
     suspend fun deleteNotification(notificationId: Int)
+
+    @Query("DELETE FROM notifications")
+    suspend fun deleteAllNotifications()
+
+    @Query("SELECT * FROM notifications WHERE eventId = :eventId AND dueDate > :currentTime LIMIT 1")
+    suspend fun getNextNotificationForEvent(eventId: Int, currentTime: Long): Notification?
+
+    @Query("SELECT * FROM notifications WHERE fileId = :fileId AND dueDate > :currentTime LIMIT 1")
+    suspend fun getNextNotificationForFile(fileId: Int, currentTime: Long): Notification?
+
+    @Query("SELECT * FROM notifications WHERE id = :notificationId")
+    suspend fun getNotificationById(notificationId: Int): Notification?
 }

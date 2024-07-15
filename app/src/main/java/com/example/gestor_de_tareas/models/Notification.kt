@@ -14,13 +14,22 @@ import androidx.room.PrimaryKey
             parentColumns = ["id"],
             childColumns = ["fileId"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = CalendarEvent::class,
+            parentColumns = ["id"],
+            childColumns = ["eventId"],
+            onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["fileId"])]
+    indices = [Index(value = ["fileId"]),
+               Index(value = ["eventId"])
+              ]
 )
 data class Notification(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "fileId") val fileId: Int,
+    @ColumnInfo(name = "fileId") val fileId: Int? = null,
+    @ColumnInfo(name = "eventId") val eventId: Int? = null,
     val message: String,
     val createdAt: Long,
     val dueDate: Long,

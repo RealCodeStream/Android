@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FileDao {
+
     @Query("SELECT * FROM files WHERE folderId = :folderId")
     fun getFilesForFolder(folderId: Int): Flow<List<File>>
 
@@ -19,4 +20,19 @@ interface FileDao {
 
     @Delete
     suspend fun deleteFile(file: File)
+
+   // @Query("SELECT * FROM files WHERE startDate <= @date AND endDate >= :date")
+    //fun getFilesForDate(date: Long): Flow<List<File>>
+   //@Query("SELECT * FROM files WHERE date(startDate / 1000, 'unixepoch') <= date(:date / 1000, 'unixepoch') AND date(endDate / 1000, 'unixepoch') >= date(:date / 1000, 'unixepoch')")
+   //fun getFilesForDate(date: Long): Flow<List<File>>
+   // @Query("SELECT * FROM files WHERE date(:date / 1000, 'unixepoch') BETWEEN date(startDate / 1000, 'unixepoch') AND date(endDate / 1000, 'unixepoch')")
+   @Query("SELECT * FROM files WHERE date(startDate / 1000, 'unixepoch', 'localtime') <= date(:date / 1000, 'unixepoch', 'localtime') AND date(endDate / 1000, 'unixepoch', 'localtime') >= date(:date / 1000, 'unixepoch', 'localtime')")
+    fun getFilesForDate(date: Long): Flow<List<File>>
+
+    @Query("DELETE FROM files")
+   suspend fun deleteAllFiles()
+
+
+
+
 }

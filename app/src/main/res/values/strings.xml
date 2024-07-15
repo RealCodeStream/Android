@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Gestor_de_Tareas</string>
+    <string name="channel_name">Notificaciones de Eventos y Tareas</string>
+    <string name="channel_description">Notificaciones para eventos y tareas próximos</string>
 </resources>

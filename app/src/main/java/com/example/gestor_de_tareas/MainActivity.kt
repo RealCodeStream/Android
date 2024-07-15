@@ -1,10 +1,13 @@
 package com.example.gestor_de_tareas
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -33,6 +36,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.collectAsState
 //import androidx.compose.runtime.Composable
 //import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -44,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -51,24 +56,28 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.gestor_de_tareas.components.CalendarScreen
 import com.example.gestor_de_tareas.components.CarpetasScreen
-import com.example.gestor_de_tareas.components.FileDatailScreen
+import com.example.gestor_de_tareas.components.FileDetailScreen
 import com.example.gestor_de_tareas.components.FileListScreen
 import com.example.gestor_de_tareas.components.NotificationsScreen
 import com.example.gestor_de_tareas.components.SettingsScreen
 import com.example.gestor_de_tareas.navigation.Screen
 import com.example.gestor_de_tareas.ui.theme.Gestor_de_TareasTheme
+import com.example.gestor_de_tareas.viewModel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     @OptIn(ExperimentalMaterial3Api::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Gestor_de_TareasTheme {
+            val viewModel: MainViewModel = hiltViewModel()
+            val darkMode by viewModel.darkModeEnabled.collectAsState(initial = isSystemInDarkTheme())
+            Gestor_de_TareasTheme(darkTheme = darkMode) {
                 val items = listOf(
                     NavigationItem(
                         title = "Home",
@@ -204,7 +213,7 @@ class MainActivity : ComponentActivity() {
                                 composable(Screen.FileDetail.route,
                                     arguments = listOf(navArgument("fileId") { type = NavType.IntType }))
                                 {backStackEntry ->
-                                    FileDatailScreen(
+                                    FileDetailScreen(
                                         navController,
                                         fileId = backStackEntry.arguments?.getInt("fileId") ?: -1
                                     )
